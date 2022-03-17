@@ -1,0 +1,13 @@
+const multer = require('multer') --> instalar
+const path = require('path') --> metodo de NodeJS
+
+//Utils
+const { AppError } = require('./utils/AppError')
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+    const[name, extension] = file.originalname.split('.')
+
+
+}
+})

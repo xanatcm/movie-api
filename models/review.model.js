@@ -23,6 +23,7 @@ const Reviews = sequelize.define("reviews", {
   rating: {
     type: DataTypes.STRING(255),
     allowNull: false,
+    defaultValue : 1
   },
   status: {
     type: DataTypes.STRING(10),
