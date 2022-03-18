@@ -2,11 +2,11 @@ const express = require('express');
 
 //Controllers
 const {
-    getAllActors,
-    getActorById,
-    createNewActor,
-    updateActor,
-    deleteActor
+  getAllActors,
+  getActorById,
+  createNewActor,
+  updateActor,
+  deleteActor
 } = require('../controllers/actor.controller');
 
 const router = express.Router();
@@ -19,6 +19,6 @@ router.post('/', createNewActor);
 
 router.patch('/:id', updateActor);
 
-router.delete('/:id', deleteActor);
+router.patch('/:id', deleteActor);
 
-module.exports
+module.exports = { acotrsRouter: router };

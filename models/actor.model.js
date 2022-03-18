@@ -1,42 +1,42 @@
-const DataTypes = require("sequelize");
+const DataTypes = require('sequelize');
 
 //Utils
-const { sequelize } = require("../utils/database");
+const { sequelize } = require('../utils/database');
 
-const Actors = sequelize.define("actors", {
+const Actor = sequelize.define('actor', {
   id: {
     primaryKey: true,
     autoIncrement: true,
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: false
   },
   name: {
     type: DataTypes.STRING(100),
     unique: true,
-    allowNull: false,
+    allowNull: false
   },
   country: {
     type: DataTypes.STRING(100),
-    allowNull: false,
+    allowNull: false
   },
   rating: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: false
   },
   age: {
     type: DataTypes.STRING(10),
-    defaultValue: "active",
-    allowNull: false,
+    defaultValue: 'active',
+    allowNull: false
   },
   profilePic: {
     type: DataTypes.STRING(10),
-    allowNull: false,
+    allowNull: false
   },
   status: {
     type: DataTypes.INTEGER,
-    defaultValue: "active",
-    allowNull: false,
-  },
+    defaultValue: 'active',
+    allowNull: false
+  }
 });
 
-module.exports = { Actors };
+module.exports = { Actor };

@@ -2,11 +2,11 @@ const express = require('express');
 
 //Controllers
 const {
-    getAllMovies,
-    getMovieById,
-    createNewMovie,
-    updateMovie,
-    deleteMovie
+  getAllMovies,
+  getMovieById,
+  createNewMovie,
+  updateMovie,
+  deleteMovie
 } = require('../controllers/movie.controller');
 
 const router = express.Router();
@@ -21,4 +21,4 @@ router.patch('/:id', updateMovie);
 
 router.delete('/:id', deleteMovie);
 
-module.exports
+module.exports = { moviesRouter: router };

@@ -1,12 +1,17 @@
 //Models
-const { Actors } = require('../models/actors.model');
-const { Movies } = require('../models/movies.model')
+const { Actor } = require('../models/actor.model');
+const { Movie } = require('../models/movie.model');
+const { Review } = require('../models/review.model');
+const { ActorInMovies } = require('../models/actorInMovies.model');
 
 const initModels = () => {
-    Movies.hasMany(Actors);
-    Actors.belongsTo(Movies);
+  // 1 User <--> M Review
+  Movie.hasMany(Review);
+  Review.belongsTo(Movie);
 
-
+  //M Movies <--> M Actors
+  Movie.belongsToMany(Actor, { through: ActorInMovies });
+  Actor.belongsToMany(Movie, { through: ActorInMovies });
 };
 
-module.exports = {initModels}
+module.exports = { initModels };
