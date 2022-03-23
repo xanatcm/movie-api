@@ -10,18 +10,21 @@ const {
   deleteUser
 } = require('../controllers/user.controller');
 
+//Middlewares
+const { validateSession } = require('../middlewares/auth.middleware');
+
 const router = express.Router();
 
-router.get('/', getAllUsers);
+router.get('/', validateSession, getAllUsers);
 
-router.get('/:id', getUserById);
+router.get('/:id', validateSession, getUserById);
 
 router.post('/', createNewUser);
 
 router.post('/', authUser);
 
-router.patch('/:id', updateUser);
+router.patch('/:id', validateSession, updateUser);
 
-router.delete('/:id', deleteUser);
+router.delete('/:id', validateSession, deleteUser);
 
 module.exports = { userRouter: router };

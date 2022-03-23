@@ -36,7 +36,6 @@ exports.getUserById = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({
     where: { id },
-    attributes: { exclude: ['password'] },
     include: [
       {
         model: Review,
@@ -59,7 +58,7 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    return next(AppError(400), 'Must provide a valid name, email and password');
+    return next(AppError(400, 'Must provide a valid name, email and password'));
   }
 
   const salt = await bcrypt.genSalt(12);

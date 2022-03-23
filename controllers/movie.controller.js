@@ -93,7 +93,7 @@ exports.deleteMovie = catchAsync(async (req, res, next) => {
   });
 
   if (!movie) {
-    return next(new AppError(404), 'Cant delete movie, invalid ID');
+    return next(new AppError(404, 'Cant delete movie, invalid ID'));
   }
 
   await movie.update({ status: 'deleted' });

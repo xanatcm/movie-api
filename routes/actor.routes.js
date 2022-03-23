@@ -9,9 +9,12 @@ const {
   deleteActor
 } = require('../controllers/actor.controller');
 
+//Middlewares
+const { validateSession } = require('../middlewares/auth.middleware');
+
 const router = express.Router();
 
-router.get('/', getAllActors);
+router.get('/', validateSession, getAllActors);
 
 router.get('/:id', getActorById);
 
