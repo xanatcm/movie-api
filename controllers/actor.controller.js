@@ -29,7 +29,7 @@ exports.getActorById = catchAsync(async (req, res, next) => {
     where: { id: id, status: 'active' }
   });
 
-  if (!post) {
+  if (!actor) {
     return next(new AppError(404, 'No actors found with the given ID'));
   }
 
