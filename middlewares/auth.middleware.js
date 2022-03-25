@@ -31,10 +31,10 @@ exports.validateSession = catchAsync(async (req, res, next) => {
   );
 
   const user = await User.findOne({
-    where: { id: decodedToken.id, status: 'active' },
     attributes: {
       exclude: ['password']
-    }
+    },
+    where: { id: decodedToken.id, status: 'active' }
   });
 
   if (!user) {
@@ -42,6 +42,14 @@ exports.validateSession = catchAsync(async (req, res, next) => {
   }
 
   req.currentUser = user;
+
+  next();
+});
+
+exports.protectAdmin = catchAsync(async (req, res, next) => {
+  if (req.currentUser.role !== 'admin') {
+    return next(new AppError(403, 'Access denied'));
+  }
 
   next();
 });

@@ -12,7 +12,6 @@ const Actor = sequelize.define('actor', {
   },
   name: {
     type: DataTypes.STRING(100),
-    unique: true,
     allowNull: false
   },
   country: {
@@ -20,22 +19,22 @@ const Actor = sequelize.define('actor', {
     allowNull: false
   },
   rating: {
-    type: DataTypes.STRING(255),
-    allowNull: false
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   },
   age: {
-    type: DataTypes.STRING(10),
-    defaultValue: 'active',
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   profilePic: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.STRING(255),
     allowNull: false
   },
   status: {
-    type: DataTypes.INTEGER,
-    defaultValue: 'active',
-    allowNull: false
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    defaultValue: 'active'
   }
 });
 

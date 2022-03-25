@@ -11,20 +11,25 @@ const {
 } = require('../controllers/user.controller');
 
 //Middlewares
-const { validateSession } = require('../middlewares/auth.middleware');
+const {
+  validateSession,
+  protectAdmin
+} = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-router.get('/', validateSession, getAllUsers);
-
-router.get('/:id', validateSession, getUserById);
-
 router.post('/', createNewUser);
 
-router.post('/', authUser);
+router.post('/login', authUser);
 
-router.patch('/:id', validateSession, updateUser);
+router.use(validateSession);
 
-router.delete('/:id', validateSession, deleteUser);
+router.get('/', protectAdmin, getAllUsers);
+
+router.get('/:id', getUserById);
+
+router.patch('/:id', updateUser);
+
+router.delete('/:id', deleteUser);
 
 module.exports = { userRouter: router };

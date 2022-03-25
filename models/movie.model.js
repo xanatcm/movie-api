@@ -12,12 +12,10 @@ const Movie = sequelize.define('movie', {
   },
   title: {
     type: DataTypes.STRING(100),
-    unique: true,
     allowNull: false
   },
   description: {
-    type: DataTypes.STRING(255),
-    unique: true,
+    type: DataTypes.STRING(100),
     allowNull: false
   },
   duration: {
@@ -26,7 +24,7 @@ const Movie = sequelize.define('movie', {
     defaultValue: 0
   },
   rating: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1
   },
@@ -36,7 +34,7 @@ const Movie = sequelize.define('movie', {
     allowNull: false
   },
   genre: {
-    type: DataTypes.STRING(100),
+    type: DataTypes.STRING(50),
     allowNull: false
   },
   status: {

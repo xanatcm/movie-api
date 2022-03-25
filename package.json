@@ -4,8 +4,7 @@
   "description": "api where you can review movies",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "start:dev": "nodemon server.js"
+    "start": "node server.js"
   },
   "keywords": [
     "api",

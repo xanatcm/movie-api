@@ -9,6 +9,7 @@ const { Review } = require('../models/review.model');
 //Utils
 const { catchAsync } = require('../utils/catchAsync');
 const { AppError } = require('../utils/AppError');
+const { filterObj } = require('../utils/filterObj');
 
 dotenv.config({ path: './config.env' });
 
@@ -61,8 +62,8 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
     return next(AppError(400, 'Must provide a valid name, email and password'));
   }
 
+  //Encode password
   const salt = await bcrypt.genSalt(12);
-
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const newUser = await User.create({
@@ -71,6 +72,7 @@ exports.createNewUser = catchAsync(async (req, res, next) => {
     password: hashedPassword
   });
 
+  //Remove password from response
   newUser.password = undefined;
 
   res.status(201).json({
@@ -90,6 +92,7 @@ exports.authUser = catchAsync(async (req, res, next) => {
     return next(new AppError(400, 'Invalid credentials'));
   }
 
+  //JWT
   const token = await jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
   });
@@ -100,7 +103,23 @@ exports.authUser = catchAsync(async (req, res, next) => {
   });
 });
 //Update movie
-exports.updateUser = catchAsync(async (req, res, next) => {});
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const data = filterObj(req.body, 'name', 'email');
+
+  const user = await User.findOne({
+    where: { id: id, status: 'active' }
+  });
+
+  if (!user) {
+    return next(new AppError(404, 'Cant update user, invalid ID'));
+  }
+
+  await user.update({ ...data });
+
+  res.status(204).json({ status: 'success' });
+});
 //Delete movie
 exports.deleteUser = catchAsync(async (req, res, next) => {});
 

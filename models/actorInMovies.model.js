@@ -10,11 +10,11 @@ const ActorInMovies = sequelize.define('actor in movies', {
     type: DataTypes.INTEGER,
     allowNull: false
   },
-  actorsId: {
-    type: DataTypes.STRING(10),
+  actorId: {
+    type: DataTypes.INTEGER,
     allowNull: false
   },
-  moviesId: {
+  movieId: {
     type: DataTypes.INTEGER,
     allowNull: false
   }

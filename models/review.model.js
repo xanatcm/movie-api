@@ -12,30 +12,28 @@ const Review = sequelize.define('review', {
   },
   title: {
     type: DataTypes.STRING(100),
-    unique: true,
     allowNull: false
   },
   comment: {
     type: DataTypes.STRING(100),
-    unique: true,
     allowNull: false
   },
   rating: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1
   },
-  status: {
-    type: DataTypes.STRING(10),
-    defaultValue: 'active',
-    allowNull: false
-  },
   userId: {
-    type: DataTypes.STRING(10),
+    type: DataTypes.INTEGER,
     allowNull: false
   },
   movieId: {
     type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  status: {
+    type: DataTypes.STRING(10),
+    defaultValue: 'active',
     allowNull: false
   }
 });

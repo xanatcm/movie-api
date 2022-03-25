@@ -43,7 +43,14 @@ exports.getMovieById = catchAsync(async (req, res, next) => {
 });
 //Create new movie
 exports.createNewMovie = catchAsync(async (req, res, next) => {
-  const { title, description, duration, genre } = req.body;
+  const { title, description, duration, genre, img, rating, actorId } =
+    req.body;
+
+  const casting = actorId.map(async (e) => {
+    return await ActorInMovies.create({ e, movieId: newMovie.id });
+  });
+
+  await Promise.all(casting);
 
   if (!title || !description || !duration || !genre) {
     return next(
@@ -58,7 +65,10 @@ exports.createNewMovie = catchAsync(async (req, res, next) => {
     title,
     description,
     duration,
-    genre
+    genre,
+    img,
+    rating,
+    casting
   });
 
   res.status(201).json({
