@@ -15,6 +15,7 @@ const {
   validateSession,
   protectAdmin
 } = require('../middlewares/auth.middleware');
+const { protectAccountOwner } = require('../middlewares/user.middleware');
 
 const router = express.Router();
 
@@ -28,8 +29,8 @@ router.get('/', protectAdmin, getAllUsers);
 
 router.get('/:id', getUserById);
 
-router.patch('/:id', updateUser);
+router.patch('/:id', protectAccountOwner, updateUser);
 
-router.delete('/:id', deleteUser);
+router.delete('/:id', protectAccountOwner, deleteUser);
 
 module.exports = { userRouter: router };

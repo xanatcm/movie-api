@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
+//const dotenv = require('dotenv');
 const { promisify } = require('util');
 
 //Models
@@ -9,7 +9,7 @@ const { User } = require('../models/user.model');
 const { AppError } = require('../utils/AppError');
 const { catchAsync } = require('../utils/catchAsync');
 
-dotenv.config({ path: './config.env' });
+//dotenv.config({ path: './config.env' });
 
 exports.validateSession = catchAsync(async (req, res, next) => {
   let token;

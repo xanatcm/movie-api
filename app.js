@@ -7,7 +7,7 @@ const { globalErrorHandler } = require('./controllers/error.controller');
 //Routers
 const { userRouter } = require('./routes/user.routes');
 const { moviesRouter } = require('./routes/movie.routes');
-const { acotrsRouter } = require('./routes/actor.routes');
+const { actorsRouter } = require('./routes/actor.routes');
 
 //Utils
 
@@ -18,12 +18,12 @@ const app = express();
 app.use(express.json());
 
 //Enable multipart/form-data incoming data (to receve files)
-//app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 //Endpoints
 app.use('/api-movies/v1/users', userRouter);
 app.use('/api-movies/v1/movies', moviesRouter);
-app.use('/api-movies/v1/actors', acotrsRouter);
+app.use('/api-movies/v1/actors', actorsRouter);
 
 //Error handler
 app.use(globalErrorHandler);

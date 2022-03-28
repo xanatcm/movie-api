@@ -13,73 +13,6 @@ const { filterObj } = require('../utils/filterObj');
 
 dotenv.config({ path: './config.env' });
 
-//Get all actors
-exports.getAllUsers = catchAsync(async (req, res, next) => {
-  const users = await User.findAll({
-    where: { status: 'active' },
-    attributes: { exclude: ['password'] },
-    include: [
-      {
-        model: Review,
-        include: [{ model: User, attributes: { exclude: ['password'] } }]
-      }
-    ]
-  });
-
-  res.status(200).json({
-    status: 'success',
-    data: { users }
-  });
-});
-//Get movie by id
-exports.getUserById = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const user = await User.findOne({
-    where: { id },
-    include: [
-      {
-        model: Review,
-        include: [{ model: User, attributes: { exclude: ['password'] } }]
-      }
-    ]
-  });
-
-  if (!user) {
-    return next(new AppError(404, 'User not found'));
-  }
-
-  res.status(200).json({
-    status: 'success',
-    data: { user }
-  });
-});
-//Create new movie(POST)
-exports.createNewUser = catchAsync(async (req, res, next) => {
-  const { name, email, password } = req.body;
-
-  if (!name || !email || !password) {
-    return next(AppError(400, 'Must provide a valid name, email and password'));
-  }
-
-  //Encode password
-  const salt = await bcrypt.genSalt(12);
-  const hashedPassword = await bcrypt.hash(password, salt);
-
-  const newUser = await User.create({
-    name,
-    email,
-    password: hashedPassword
-  });
-
-  //Remove password from response
-  newUser.password = undefined;
-
-  res.status(201).json({
-    status: 'success',
-    data: { newUser }
-  });
-});
 //Login (POST)
 exports.authUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -102,6 +35,77 @@ exports.authUser = catchAsync(async (req, res, next) => {
     data: { token }
   });
 });
+//Get all actors
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const users = await User.findAll({
+    where: { status: 'active' },
+    attributes: { exclude: ['password'] },
+    include: [
+      {
+        model: Review
+        //include: [{ model: User, attributes: { exclude: ['password'] } }]
+      }
+    ]
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: { users }
+  });
+});
+//Get movie by id
+exports.getUserById = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
+
+  const user = await User.findOne({
+    where: { id },
+    attributes: { exclude: ['password'] },
+    include: [
+      {
+        model: Review
+        //include: [{ model: User, attributes: { exclude: ['password'] } }]
+      }
+    ]
+  });
+
+  if (!user) {
+    return next(new AppError(404, 'User not found'));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: { user }
+  });
+});
+//Create new movie(POST)
+exports.createNewUser = catchAsync(async (req, res, next) => {
+  const { username, email, password, role } = req.body;
+
+  if (!username || !email || !password || !role) {
+    return next(
+      new AppError(400, 'Must provide a valid name, email and password')
+    );
+  }
+
+  //Encode password
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const newUser = await User.create({
+    username,
+    email,
+    password: hashedPassword,
+    role
+  });
+
+  //Remove password from response
+  newUser.password = undefined;
+
+  res.status(201).json({
+    status: 'success',
+    data: { newUser }
+  });
+});
 //Update movie
 exports.updateUser = catchAsync(async (req, res, next) => {
   const { id } = req.params;
@@ -109,7 +113,8 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   const data = filterObj(req.body, 'name', 'email');
 
   const user = await User.findOne({
-    where: { id: id, status: 'active' }
+    where: { id: id, status: 'active' },
+    attributes: { exclude: ['password'] }
   });
 
   if (!user) {
@@ -121,9 +126,19 @@ exports.updateUser = catchAsync(async (req, res, next) => {
   res.status(204).json({ status: 'success' });
 });
 //Delete movie
-exports.deleteUser = catchAsync(async (req, res, next) => {});
+exports.deleteUser = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-/*NOTE: Image uploading is not necessary but an extra
-  NOTE: Password must be encrypted for users
-  NOTE: Update user fields (username, email)
-  NOTE: Update movie fields (title, description, duration, genre) */
+  const user = await User.findOne({
+    attributes: { exclude: ['password'] },
+    where: { id: id, status: 'active' }
+  });
+
+  if (!user) {
+    return next(new AppError(404, 'Cant delete user, invalid ID'));
+  }
+
+  await user.update({ status: 'deleted' });
+
+  res.status(204).json({ stauts: 'success' });
+});
