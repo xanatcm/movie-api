@@ -3,7 +3,6 @@ const { validationResult } = require('express-validator');
 
 //Models
 const { Actor } = require('../models/actor.model');
-const { Review } = require('../models/review.model');
 const { Movie } = require('../models/movie.model');
 const { ActorInMovies } = require('../models/actorInMovies.model');
 
@@ -17,7 +16,7 @@ const {} = require('../utils/firebase');
 exports.getAllMovies = catchAsync(async (req, res, next) => {
   const movies = await Movie.findAll({
     where: { status: 'active' },
-    include: [{ model: Review }, { model: Actor }]
+    include: [{ model: Actor }]
   });
 
   res.status(200).json({
