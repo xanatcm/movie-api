@@ -10,7 +10,7 @@ const { ActorInMovies } = require('../models/actorInMovies.model');
 const { catchAsync } = require('../utils/catchAsync');
 const { AppError } = require('../utils/AppError');
 const { filterObj } = require('../utils/filterObj');
-const {} = require('../utils/firebase');
+const { storage } = require('../utils/firebase');
 
 //Get all movies
 exports.getAllMovies = catchAsync(async (req, res, next) => {
@@ -40,19 +40,6 @@ exports.getMovieById = catchAsync(async (req, res, next) => {
 //Create new movie
 exports.createNewMovie = catchAsync(async (req, res, next) => {
   const { title, description, duration, genre, rating, actors } = req.body;
-
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    const errorMsg = errors
-      .array()
-      .map(({ msg }) => {
-        msg;
-      })
-      .join('. ');
-
-    return next(new AppError(400, errorMsg));
-  }
 
   const fileExtension = req.file.originalname.split('.')[1];
 
